@@ -17,7 +17,7 @@
             --accent-color: #fbbf24; /* Amber/Gold for highlights */
             --accent-hover: #f59e0b; /* Darker amber for hover states */
             --text-light: #f8fafc;   /* Main light text */
-            --text-muted: #94a3b8;   /* Secondary gray text */
+            --text-muted: #cbd5e1;   /* Lighter gray for visibility */
         }
 
         body {
@@ -28,21 +28,22 @@
 
         /* Navbar Styling (Glassmorphism) */
         .navbar-custom {
-            background-color: rgba(15, 23, 42, 0.85) !important;
+            background-color: rgba(15, 23, 42, 0.95) !important;
             backdrop-filter: blur(10px);
             border-bottom: 1px solid rgba(255, 255, 255, 0.1);
         }
 
         /* Page Headings */
         .page-title {
-            background: linear-gradient(to right, #ffffff, #cbd5e1);
+            background: linear-gradient(to right, #ffffff, #e2e8f0);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
 
         /* --- FORM STYLING --- */
         .search-container {
-            max-width: 700px; /* Limit width for better readability on large screens */
+            max-width: 700px;
+            width: 100%; /* Ensure it takes width up to max-width */
         }
 
         /* Custom Input Field */
@@ -50,9 +51,9 @@
             background-color: var(--bg-input);
             border: 2px solid transparent;
             color: var(--text-light);
-            padding: 1rem 1.5rem; /* Larger padding for modern feel */
+            padding: 1rem 1.5rem; 
             font-size: 1.1rem;
-            border-radius: 50rem; /* Pill shape */
+            border-radius: 50rem; 
             transition: all 0.3s ease;
         }
 
@@ -65,17 +66,17 @@
             background-color: var(--bg-input);
             color: var(--text-light);
             border-color: var(--accent-color);
-            box-shadow: 0 0 0 4px rgba(251, 191, 36, 0.2); /* Amber glow */
+            box-shadow: 0 0 0 4px rgba(251, 191, 36, 0.2); 
         }
 
         /* Custom Accent Button */
         .btn-accent {
             background: linear-gradient(135deg, var(--accent-color), var(--accent-hover));
             border: none;
-            color: #0f172a; /* Dark text for contrast on bright button */
+            color: #0f172a; 
             font-weight: 700;
             padding: 0.8rem 2.5rem;
-            border-radius: 50rem; /* Pill shape */
+            border-radius: 50rem; 
             letter-spacing: 0.5px;
             transition: transform 0.2s, filter 0.2s;
         }
@@ -86,7 +87,33 @@
             color: #0f172a;
         }
 
-        /* --- CARD STYLING (Shared with Home) --- */
+        /* --- NAVBAR BUTTON STYLING --- */
+        .btn-recommend-nav {
+            background-color: var(--accent-color);
+            color: #0f172a;
+            font-weight: 700;
+            border-radius: 50px;
+            transition: all 0.3s ease;
+            box-shadow: 0 0 15px rgba(251, 191, 36, 0.4); 
+        }
+
+        .btn-recommend-nav:hover {
+            background-color: #f59e0b; 
+            transform: scale(1.05); 
+            box-shadow: 0 0 25px rgba(251, 191, 36, 0.7);
+        }
+
+        @keyframes pulse-animation {
+            0% { box-shadow: 0 0 0 0 rgba(251, 191, 36, 0.7); }
+            70% { box-shadow: 0 0 0 10px rgba(251, 191, 36, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(251, 191, 36, 0); }
+        }
+
+        .pulse-btn {
+            animation: pulse-animation 2s infinite;
+        }
+
+        /* --- CARD STYLING --- */
         .book-card {
             background-color: var(--bg-card);
             border: 1px solid rgba(255, 255, 255, 0.05);
@@ -95,7 +122,7 @@
 
         .book-card:hover {
             transform: translateY(-7px);
-            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.2) !important;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.3) !important;
             border-color: var(--accent-color);
         }
 
@@ -108,6 +135,38 @@
         .card-title { color: #ffffff; font-weight: 600; }
         .author-text { color: var(--text-muted); font-weight: 500; font-size: 0.9rem; }
         .rating-star { color: var(--accent-color); }
+
+        /* --- MEDIA QUERIES (RESPONSIVENESS) --- */
+        @media (max-width: 768px) {
+            /* Adjust Title Size on Mobile */
+            .page-title {
+                font-size: 2rem; 
+            }
+            
+            /* Make Search Bar Wider on Mobile */
+            .search-container {
+                width: 90%; 
+            }
+
+            /* Adjust Navbar Layout on Mobile */
+            .navbar-nav {
+                text-align: center;
+                padding-top: 1rem;
+                padding-bottom: 1rem;
+            }
+
+            /* Make the Recommend Button Full Width in Menu */
+            .btn-recommend-nav {
+                display: block;
+                width: 100%;
+                margin: 15px 0 0 0 !important;
+            }
+            
+            /* Adjust Card Image Height for Mobile Scrolling */
+            .book-card-img {
+                height: 400px;
+            }
+        }
     </style>
 </head>
 
@@ -124,12 +183,13 @@
         </button>
 
         <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav ms-auto">
+            <ul class="navbar-nav ms-auto align-items-center">
                 <li class="nav-item">
-                    <a class="nav-link px-3" href="/">Home</a>
+                    <a class="nav-link px-3 me-2" href="/">Home</a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link active px-3 fw-semibold text-warning" href="/recommend">Recommend</a>
+                <li class="nav-item w-100"> <a class="nav-link btn btn-recommend-nav pulse-btn px-4 py-2 ms-lg-2 text-dark" href="/recommend">
+                        Recommend Me a Book
+                    </a>
                 </li>
             </ul>
         </div>
@@ -140,7 +200,7 @@
     <h1 class="page-title fw-bold display-5">
         Find Your Next Obsession
     </h1>
-    <p class="text-muted fs-5 mt-3 col-md-8 mx-auto">
+    <p class="text-white-50 fs-5 mt-3 col-md-8 mx-auto">
         Tell us a book you loved, and our system will find similar reads tailored just for you.
     </p>
 

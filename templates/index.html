@@ -14,7 +14,7 @@
             --bg-main: #0f172a;      /* Deep slate blue background */
             --bg-card: #1e293b;      /* Slightly lighter slate for elements */
             --accent-color: #fbbf24; /* Amber/Gold for highlights */
-            --text-muted: #94a3b8;   /* Lighter gray for secondary text */
+            --text-muted: #cbd5e1;   /* Lighter gray for visibility */
         }
 
         body {
@@ -25,15 +25,14 @@
 
         /* Navbar Styling */
         .navbar-custom {
-            background-color: rgba(15, 23, 42, 0.85) !important; /* Semi-transparent dark */
-            backdrop-filter: blur(10px); /* Glass effect */
+            background-color: rgba(15, 23, 42, 0.95) !important; /* Made slightly darker for contrast */
+            backdrop-filter: blur(10px); 
             border-bottom: 1px solid rgba(255, 255, 255, 0.1);
         }
 
         /* Hero Section Styling */
         .hero-title {
-             /* Subtle gradient text effect */
-            background: linear-gradient(to right, #ffffff, #94a3b8);
+            background: linear-gradient(to right, #ffffff, #e2e8f0);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
@@ -41,22 +40,20 @@
         /* Card Styling */
         .book-card {
             background-color: var(--bg-card);
-            border: 1px solid rgba(255, 255, 255, 0.05); /* Very subtle border */
+            border: 1px solid rgba(255, 255, 255, 0.05); 
             transition: all 0.3s ease-in-out;
         }
 
-        /* Hover effect for cards */
         .book-card:hover {
-            transform: translateY(-5px); /* Lift up slightly */
-            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04) !important; /* Tailwind-style shadow */
-            border-color: var(--accent-color); /* Highlight border on hover */
+            transform: translateY(-5px); 
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.3) !important; 
+            border-color: var(--accent-color); 
         }
 
-        /* Ensure all book images are the same size and crop nicely */
         .book-card-img {
-            height: 350px; /* Fixed height */
-            object-fit: cover; /* Ensure image fills the area without stretching */
-            object-position: top center; /* Focus on top of book cover */
+            height: 350px; 
+            object-fit: cover; 
+            object-position: top center; 
         }
 
         .card-title {
@@ -87,16 +84,15 @@
             font-weight: 700;
             border-radius: 50px;
             transition: all 0.3s ease;
-            box-shadow: 0 0 10px rgba(251, 191, 36, 0.5); /* Glowing effect */
+            box-shadow: 0 0 15px rgba(251, 191, 36, 0.4); 
         }
 
         .btn-recommend:hover {
-            background-color: #f59e0b; /* Darker amber on hover */
-            transform: scale(1.05); /* Slight zoom */
-            box-shadow: 0 0 20px rgba(251, 191, 36, 0.8);
+            background-color: #f59e0b; 
+            transform: scale(1.05); 
+            box-shadow: 0 0 25px rgba(251, 191, 36, 0.7);
         }
 
-        /* Optional: Gentle Pulse Animation for the button */
         @keyframes pulse-animation {
             0% { box-shadow: 0 0 0 0 rgba(251, 191, 36, 0.7); }
             70% { box-shadow: 0 0 0 10px rgba(251, 191, 36, 0); }
@@ -105,6 +101,33 @@
 
         .pulse-btn {
             animation: pulse-animation 2s infinite;
+        }
+
+        /* --- MEDIA QUERIES (RESPONSIVENESS) --- */
+        @media (max-width: 768px) {
+            /* Adjust Title Size on Mobile */
+            .hero-title {
+                font-size: 2rem; 
+            }
+
+            /* Adjust Navbar Layout on Mobile */
+            .navbar-nav {
+                text-align: center;
+                padding-top: 1rem;
+                padding-bottom: 1rem;
+            }
+
+            /* Make the Recommend Button Full Width in Menu */
+            .btn-recommend {
+                display: block;
+                width: 100%;
+                margin: 15px 0 0 0 !important;
+            }
+
+            /* Adjust Card Image Height for Mobile Scrolling */
+            .book-card-img {
+                height: 400px;
+            }
         }
     </style>
 </head>
@@ -122,11 +145,12 @@
         </button>
 
         <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav ms-auto align-items-center"> <li class="nav-item">
+            <ul class="navbar-nav ms-auto align-items-center"> 
+                <li class="nav-item">
                     <a class="nav-link active px-3 me-2" href="/">Home</a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link btn btn-recommend pulse-btn px-4 py-2 ms-2 text-dark" href="/recommend">
+                <li class="nav-item w-100">
+                    <a class="nav-link btn btn-recommend pulse-btn px-4 py-2 ms-lg-2 text-dark" href="/recommend">
                         Recommend Me a Book
                     </a>
                 </li>
@@ -139,7 +163,7 @@
     <h1 class="hero-title fw-bold display-4 mb-3">
         Discover Your Next Page-Turner
     </h1>
-    <p class="text-muted fs-5 col-md-8 mx-auto">
+    <p class="text-white-50 fs-5 col-md-8 mx-auto">
         Explore top-rated books curated by readers worldwide. Find recommendations tailored just for you.
     </p>
 </div>

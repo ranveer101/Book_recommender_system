@@ -6,66 +6,184 @@
     <title>Recommend Books</title>
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        /* --- SHARED THEME VARIABLES & STYLES --- */
+        :root {
+            --bg-main: #0f172a;      /* Deep slate blue background */
+            --bg-card: #1e293b;      /* Slightly lighter slate for elements */
+            --bg-input: #334155;     /* Input field background */
+            --accent-color: #fbbf24; /* Amber/Gold for highlights */
+            --accent-hover: #f59e0b; /* Darker amber for hover states */
+            --text-light: #f8fafc;   /* Main light text */
+            --text-muted: #94a3b8;   /* Secondary gray text */
+        }
+
+        body {
+            background-color: var(--bg-main);
+            font-family: 'Poppins', sans-serif;
+            color: var(--text-light);
+        }
+
+        /* Navbar Styling (Glassmorphism) */
+        .navbar-custom {
+            background-color: rgba(15, 23, 42, 0.85) !important;
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        /* Page Headings */
+        .page-title {
+            background: linear-gradient(to right, #ffffff, #cbd5e1);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        /* --- FORM STYLING --- */
+        .search-container {
+            max-width: 700px; /* Limit width for better readability on large screens */
+        }
+
+        /* Custom Input Field */
+        .form-control-dark {
+            background-color: var(--bg-input);
+            border: 2px solid transparent;
+            color: var(--text-light);
+            padding: 1rem 1.5rem; /* Larger padding for modern feel */
+            font-size: 1.1rem;
+            border-radius: 50rem; /* Pill shape */
+            transition: all 0.3s ease;
+        }
+
+        .form-control-dark::placeholder {
+            color: var(--text-muted);
+            opacity: 0.7;
+        }
+
+        .form-control-dark:focus {
+            background-color: var(--bg-input);
+            color: var(--text-light);
+            border-color: var(--accent-color);
+            box-shadow: 0 0 0 4px rgba(251, 191, 36, 0.2); /* Amber glow */
+        }
+
+        /* Custom Accent Button */
+        .btn-accent {
+            background: linear-gradient(135deg, var(--accent-color), var(--accent-hover));
+            border: none;
+            color: #0f172a; /* Dark text for contrast on bright button */
+            font-weight: 700;
+            padding: 0.8rem 2.5rem;
+            border-radius: 50rem; /* Pill shape */
+            letter-spacing: 0.5px;
+            transition: transform 0.2s, filter 0.2s;
+        }
+
+        .btn-accent:hover {
+            filter: brightness(1.1);
+            transform: translateY(-2px);
+            color: #0f172a;
+        }
+
+        /* --- CARD STYLING (Shared with Home) --- */
+        .book-card {
+            background-color: var(--bg-card);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            transition: all 0.3s ease-in-out;
+        }
+
+        .book-card:hover {
+            transform: translateY(-7px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.2) !important;
+            border-color: var(--accent-color);
+        }
+
+        .book-card-img {
+            height: 320px;
+            object-fit: cover;
+            object-position: top center;
+        }
+
+        .card-title { color: #ffffff; font-weight: 600; }
+        .author-text { color: var(--text-muted); font-weight: 500; font-size: 0.9rem; }
+        .rating-star { color: var(--accent-color); }
+    </style>
 </head>
 
-<body style="background-color: #0f172a;">
+<body>
 
-<!-- NAVBAR -->
-<nav class="navbar navbar-expand-lg shadow" style="background-color: #00a65a;">
-    <div class="container-fluid">
-        <a class="navbar-brand text-white fw-bold" href="/">
-            📚 My Book Recommender
+<nav class="navbar navbar-expand-lg navbar-dark navbar-custom shadow-sm sticky-top">
+    <div class="container">
+        <a class="navbar-brand fw-bold fs-4 d-flex align-items-center" href="/">
+            <span class="me-2">📚</span> My Book Recommender
         </a>
 
-        <ul class="navbar-nav ms-auto">
-            <li class="nav-item">
-                <a class="nav-link text-white fw-semibold" href="/">Home</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link text-white fw-semibold" href="/recommend">Recommend</a>
-            </li>
-        </ul>
+        <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ms-auto">
+                <li class="nav-item">
+                    <a class="nav-link px-3" href="/">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link active px-3 fw-semibold text-warning" href="/recommend">Recommend</a>
+                </li>
+            </ul>
+        </div>
     </div>
 </nav>
 
-<!-- SEARCH SECTION -->
-<div class="container text-center mt-5">
-    <h2 class="text-white fw-bold">
-        Get Personalized Book Recommendations
-    </h2>
-    <p class="text-secondary mt-2">
-        Enter a book name you like
+<div class="container text-center py-5 mt-3 mb-4">
+    <h1 class="page-title fw-bold display-5">
+        Find Your Next Obsession
+    </h1>
+    <p class="text-muted fs-5 mt-3 col-md-8 mx-auto">
+        Tell us a book you loved, and our system will find similar reads tailored just for you.
     </p>
 
-    <form action="/recommend_books" method="post" class="mt-4">
-        <input 
-            type="text"
-            name="book_name"
-            class="form-control mx-auto"
-            placeholder="Enter a book name"
-            style="width: 50%;"
-            required
-        >
-        <br>
-        <button type="submit" class="btn btn-success px-4">
-            Recommend
-        </button>
-    </form>
+    <div class="search-container mx-auto mt-5">
+        <form action="/recommend_books" method="post">
+            <div class="mb-4">
+                <input 
+                    type="text"
+                    name="book_name"
+                    class="form-control form-control-dark text-center"
+                    placeholder="e.g., The Harry Potter, 1984, The Hobbit..."
+                    required
+                    autocomplete="off"
+                >
+            </div>
+            <button type="submit" class="btn btn-accent fs-5 shadow-sm">
+                🚀 Get Recommendations
+            </button>
+        </form>
+    </div>
 </div>
 
-<!-- RESULTS -->
 {% if recommended_books %}
-<div class="container mt-5">
-    <div class="row">
+<div class="container pb-5" id="results">
+    <h3 class="text-white fw-bold mb-4">Results based on your input:</h3>
+    <div class="row row-cols-1 row-cols-sm-2 row-cols-lg-3 row-cols-xl-4 g-4">
         {% for book in recommended_books %}
-        <div class="col-md-3 mb-4">
-            <div class="card h-100 shadow-lg border-0">
-                <img src="{{ book.image }}" class="card-img-top" alt="{{ book.title }}">
-                <div class="card-body">
-                    <h5 class="card-title fw-bold">{{ book.title }}</h5>
-                    <p class="text-muted mb-1">{{ book.author }}</p>
-                    <p class="mb-1">⭐ {{ book.avg_rating }}</p>
-                    <p class="text-muted">{{ book.num_rating }} ratings</p>
+        <div class="col">
+            <div class="card h-100 shadow book-card">
+                <img src="{{ book.image }}" class="card-img-top book-card-img" alt="{{ book.title }}">
+                <div class="card-body d-flex flex-column">
+                    <h5 class="card-title text-truncate">{{ book.title }}</h5>
+                    <p class="author-text mb-3 text-truncate">By {{ book.author }}</p>
+
+                    <div class="mt-auto">
+                         <div class="d-flex align-items-center mb-1">
+                            <span class="rating-star me-1">⭐</span>
+                            <span class="fw-bold text-white">{{ book.avg_rating }}</span>
+                             <span class="mx-1 text-muted">/</span>
+                             <span class="text-muted" style="font-size: 0.9em">5</span>
+                        </div>
+                        <p class="text-muted small mb-0">{{ book.num_rating }} total ratings</p>
+                    </div>
                 </div>
             </div>
         </div>
@@ -75,10 +193,14 @@
 {% endif %}
 
 {% if error %}
-<div class="container text-center mt-4">
-    <p class="text-danger fw-semibold">{{ error }}</p>
+<div class="container text-center mt-4 mb-5">
+    <div class="alert alert-danger d-inline-block px-4 py-3 shadow-sm border-0" style="background-color: rgba(220, 53, 69, 0.9); color: white;" role="alert">
+        <span class="me-2">⚠️</span> <strong>Oops!</strong> {{ error }}
+    </div>
 </div>
 {% endif %}
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 
 </body>
 </html>

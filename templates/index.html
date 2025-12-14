@@ -6,52 +6,165 @@
     <title>Book Recommender System</title>
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            /* Define theme colors for easy changing */
+            --bg-main: #0f172a;      /* Deep slate blue background */
+            --bg-card: #1e293b;      /* Slightly lighter slate for elements */
+            --accent-color: #fbbf24; /* Amber/Gold for highlights */
+            --text-muted: #94a3b8;   /* Lighter gray for secondary text */
+        }
+
+        body {
+            background-color: var(--bg-main);
+            font-family: 'Poppins', sans-serif;
+            color: #f8fafc; /* Light text globally */
+        }
+
+        /* Navbar Styling */
+        .navbar-custom {
+            background-color: rgba(15, 23, 42, 0.85) !important; /* Semi-transparent dark */
+            backdrop-filter: blur(10px); /* Glass effect */
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        /* Hero Section Styling */
+        .hero-title {
+             /* Subtle gradient text effect */
+            background: linear-gradient(to right, #ffffff, #94a3b8);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        /* Card Styling */
+        .book-card {
+            background-color: var(--bg-card);
+            border: 1px solid rgba(255, 255, 255, 0.05); /* Very subtle border */
+            transition: all 0.3s ease-in-out;
+        }
+
+        /* Hover effect for cards */
+        .book-card:hover {
+            transform: translateY(-5px); /* Lift up slightly */
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04) !important; /* Tailwind-style shadow */
+            border-color: var(--accent-color); /* Highlight border on hover */
+        }
+
+        /* Ensure all book images are the same size and crop nicely */
+        .book-card-img {
+            height: 350px; /* Fixed height */
+            object-fit: cover; /* Ensure image fills the area without stretching */
+            object-position: top center; /* Focus on top of book cover */
+        }
+
+        .card-title {
+            color: #ffffff;
+            font-weight: 600;
+        }
+
+        .author-text {
+            color: var(--text-muted);
+            font-weight: 500;
+            font-size: 0.9rem;
+        }
+
+        /* Rating Star Styling */
+        .rating-star {
+            color: var(--accent-color);
+        }
+        
+        .rating-count {
+             color: var(--text-muted);
+             font-size: 0.85rem;
+        }
+
+        /* Eye-catching Recommend Button */
+        .btn-recommend {
+            background-color: var(--accent-color);
+            color: #0f172a;
+            font-weight: 700;
+            border-radius: 50px;
+            transition: all 0.3s ease;
+            box-shadow: 0 0 10px rgba(251, 191, 36, 0.5); /* Glowing effect */
+        }
+
+        .btn-recommend:hover {
+            background-color: #f59e0b; /* Darker amber on hover */
+            transform: scale(1.05); /* Slight zoom */
+            box-shadow: 0 0 20px rgba(251, 191, 36, 0.8);
+        }
+
+        /* Optional: Gentle Pulse Animation for the button */
+        @keyframes pulse-animation {
+            0% { box-shadow: 0 0 0 0 rgba(251, 191, 36, 0.7); }
+            70% { box-shadow: 0 0 0 10px rgba(251, 191, 36, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(251, 191, 36, 0); }
+        }
+
+        .pulse-btn {
+            animation: pulse-animation 2s infinite;
+        }
+    </style>
 </head>
 
-<body style="background-color: #0f172a;">
+<body>
 
-<!-- NAVBAR -->
-<nav class="navbar navbar-expand-lg shadow" style="background-color: #00a65a;">
-    <div class="container-fluid">
-        <a class="navbar-brand text-white fw-bold" href="/">
-            📚 My Book Recommender
+<nav class="navbar navbar-expand-lg navbar-dark navbar-custom shadow-sm sticky-top">
+    <div class="container">
+        <a class="navbar-brand fw-bold fs-4 d-flex align-items-center" href="/">
+            <span class="me-2">📚</span> My Book Recommender
         </a>
 
-        <ul class="navbar-nav ms-auto">
-            <li class="nav-item">
-                <a class="nav-link text-white fw-semibold" href="/">Home</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link text-white fw-semibold" href="/recommend">Recommend</a>
-            </li>
-        </ul>
+        <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ms-auto align-items-center"> <li class="nav-item">
+                    <a class="nav-link active px-3 me-2" href="/">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link btn btn-recommend pulse-btn px-4 py-2 ms-2 text-dark" href="/recommend">
+                        Recommend Me a Book
+                    </a>
+                </li>
+            </ul>
+        </div>
     </div>
 </nav>
 
-<!-- HERO -->
-<div class="container text-center mt-5">
-    <h1 class="text-white fw-bold display-5">
-        Discover Your Next Favorite Book
+<div class="container text-center py-5 mb-3">
+    <h1 class="hero-title fw-bold display-4 mb-3">
+        Discover Your Next Page-Turner
     </h1>
-    <p class="text-secondary fs-5 mt-3">
-        Top-rated books loved by readers worldwide
+    <p class="text-muted fs-5 col-md-8 mx-auto">
+        Explore top-rated books curated by readers worldwide. Find recommendations tailored just for you.
     </p>
 </div>
 
-<!-- BOOK CARDS -->
-<div class="container mt-5">
-    <div class="row">
+<div class="container pb-5">
+    <div class="row row-cols-1 row-cols-sm-2 row-cols-lg-3 row-cols-xl-4 g-4 justify-content-center">
 
         {% for i in range(book_name|length) %}
-        <div class="col-md-4 mb-4">
-            <div class="card h-100 shadow-lg border-0">
-                <img src="{{ image[i] }}" class="card-img-top" alt="Book Image">
+        <div class="col">
+            <div class="card h-100 shadow book-card">
+                <img src="{{ image[i] }}" class="card-img-top book-card-img" alt="{{ book_name[i] }} Cover">
 
-                <div class="card-body">
-                    <h5 class="card-title fw-bold">{{ book_name[i] }}</h5>
-                    <p class="text-muted mb-1">{{ author[i] }}</p>
-                    <p class="mb-1">⭐ {{ rating[i] }}</p>
-                    <p class="text-muted">{{ votes[i] }} ratings</p>
+                <div class="card-body d-flex flex-column">
+                    <h5 class="card-title text-truncate">{{ book_name[i] }}</h5>
+                    <p class="author-text mb-2 text-truncate">By {{ author[i] }}</p>
+
+                    <div class="mt-auto">
+                        <div class="d-flex align-items-center mb-1">
+                            <span class="rating-star me-1">⭐</span>
+                            <span class="fw-bold text-white">{{ rating[i] }}</span>
+                             <span class="mx-1 text-muted">/</span>
+                             <span class="text-muted" style="font-size: 0.9em">5</span>
+                        </div>
+                        <p class="rating-count mb-0">{{ votes[i] }} total ratings</p>
+                    </div>
                 </div>
             </div>
         </div>
@@ -60,5 +173,6 @@
     </div>
 </div>
 
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

@@ -3,11 +3,28 @@ import pickle
 import numpy as np
 
 # ================= LOAD DATA =================
+# ================= LOAD & CLEAN DATA =================
 popular_df = pickle.load(open('popular.pkl', 'rb'))
 pt = pickle.load(open('pt.pkl', 'rb'))
 books = pickle.load(open('books.pkl', 'rb'))
 similarity_score = pickle.load(open('similarity_scores.pkl', 'rb'))
 ratings = pickle.load(open('ratings.pkl', 'rb'))
+
+# --- FIX 1: Handle Missing Values ---
+# Fill any NaN (empty) image slots with a placeholder immediately
+popular_df['Image-URL-M'].fillna('https://placehold.co/400x600/png?text=No+Cover', inplace=True)
+books['Image-URL-M'].fillna('https://placehold.co/400x600/png?text=No+Cover', inplace=True)
+
+# --- FIX 2: Point to the Correct Secure Amazon Server ---
+# Old 'images.amazon.com' does NOT support HTTPS. We must switch to 'images-na.ssl-images-amazon.com'
+def secure_url(url):
+    if isinstance(url, str):
+        return url.replace('http://images.amazon.com/', 'https://images-na.ssl-images-amazon.com/') \
+                  .replace('http://', 'https://')
+    return url
+
+popular_df['Image-URL-M'] = popular_df['Image-URL-M'].apply(secure_url)
+books['Image-URL-M'] = books['Image-URL-M'].apply(secure_url)
 
 # ================= APP =================
 app = Flask(__name__)
@@ -71,3 +88,5 @@ def recommend():
 # ================= RUN =================
 if __name__ == '__main__':
     app.run(debug=True)
+
+

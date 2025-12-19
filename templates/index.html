@@ -3,200 +3,179 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Book Recommender System</title>
+    <title>BookHaven | Discover Your Next Read</title>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'library-dark': '#0f172a', /* Deep Slate */
+                        'library-card': '#1e293b', /* Card BG */
+                        'brand-gold': '#d4af37',   /* Metallic Gold */
+                        'brand-gold-hover': '#b5952f',
+                        'text-secondary': '#94a3b8'
+                    },
+                    fontFamily: {
+                        'serif': ['"Playfair Display"', 'serif'],
+                        'sans': ['"Inter"', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
 
     <style>
-        :root {
-            /* Define theme colors for easy changing */
-            --bg-main: #0f172a;      /* Deep slate blue background */
-            --bg-card: #1e293b;      /* Slightly lighter slate for elements */
-            --accent-color: #fbbf24; /* Amber/Gold for highlights */
-            --text-muted: #cbd5e1;   /* Lighter gray for visibility */
-        }
-
-        body {
-            background-color: var(--bg-main);
-            font-family: 'Poppins', sans-serif;
-            color: #f8fafc; /* Light text globally */
-        }
-
-        /* Navbar Styling */
-        .navbar-custom {
-            background-color: rgba(15, 23, 42, 0.95) !important; /* Made slightly darker for contrast */
-            backdrop-filter: blur(10px); 
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-        }
-
-        /* Hero Section Styling */
-        .hero-title {
-            background: linear-gradient(to right, #ffffff, #e2e8f0);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        /* Card Styling */
-        .book-card {
-            background-color: var(--bg-card);
-            border: 1px solid rgba(255, 255, 255, 0.05); 
-            transition: all 0.3s ease-in-out;
-        }
-
-        .book-card:hover {
-            transform: translateY(-5px); 
-            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.3) !important; 
-            border-color: var(--accent-color); 
-        }
-
-        .book-card-img {
-            height: 350px; 
-            object-fit: cover; 
-            object-position: top center; 
-        }
-
-        .card-title {
-            color: #ffffff;
-            font-weight: 600;
-        }
-
-        .author-text {
-            color: var(--text-muted);
-            font-weight: 500;
-            font-size: 0.9rem;
-        }
-
-        /* Rating Star Styling */
-        .rating-star {
-            color: var(--accent-color);
+        /* Custom Utilities that Tailwind config sometimes misses in CDN mode */
+        .glass-nav {
+            background: rgba(15, 23, 42, 0.85);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
         }
         
-        .rating-count {
-             color: var(--text-muted);
-             font-size: 0.85rem;
+        .book-shadow {
+            box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.5);
         }
 
-        /* Eye-catching Recommend Button */
-        .btn-recommend {
-            background-color: var(--accent-color);
-            color: #0f172a;
-            font-weight: 700;
-            border-radius: 50px;
-            transition: all 0.3s ease;
-            box-shadow: 0 0 15px rgba(251, 191, 36, 0.4); 
+        .hover-card-rise {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
 
-        .btn-recommend:hover {
-            background-color: #f59e0b; 
-            transform: scale(1.05); 
-            box-shadow: 0 0 25px rgba(251, 191, 36, 0.7);
-        }
-
-        @keyframes pulse-animation {
-            0% { box-shadow: 0 0 0 0 rgba(251, 191, 36, 0.7); }
-            70% { box-shadow: 0 0 0 10px rgba(251, 191, 36, 0); }
-            100% { box-shadow: 0 0 0 0 rgba(251, 191, 36, 0); }
-        }
-
-        .pulse-btn {
-            animation: pulse-animation 2s infinite;
-        }
-
-        /* --- MEDIA QUERIES (RESPONSIVENESS) --- */
-        @media (max-width: 768px) {
-            /* Adjust Title Size on Mobile */
-            .hero-title {
-                font-size: 2rem; 
-            }
-
-            /* Adjust Navbar Layout on Mobile */
-            .navbar-nav {
-                text-align: center;
-                padding-top: 1rem;
-                padding-bottom: 1rem;
-            }
-
-            /* Make the Recommend Button Full Width in Menu */
-            .btn-recommend {
-                display: block;
-                width: 100%;
-                margin: 15px 0 0 0 !important;
-            }
-
-            /* Adjust Card Image Height for Mobile Scrolling */
-            .book-card-img {
-                height: 400px;
-            }
+        .hover-card-rise:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px -12px rgba(212, 175, 55, 0.15); /* Gold tinted shadow */
         }
     </style>
 </head>
 
-<body>
+<body class="bg-library-dark text-slate-50 font-sans min-h-screen flex flex-col">
 
-<nav class="navbar navbar-expand-lg navbar-dark navbar-custom shadow-sm sticky-top">
-    <div class="container">
-        <a class="navbar-brand fw-bold fs-4 d-flex align-items-center" href="/">
-            <span class="me-2">📚</span> My Book Recommender
-        </a>
+    <nav class="fixed w-full z-50 glass-nav transition-all duration-300">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-20">
+                <a href="/" class="flex-shrink-0 flex items-center gap-3 hover:opacity-80 transition-opacity">
+                    <i class="fa-solid fa-book-open text-brand-gold text-2xl"></i>
+                    <span class="font-serif text-2xl font-bold tracking-tight text-white">BookHaven</span>
+                </a>
 
-        <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-
-        <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav ms-auto align-items-center"> 
-                <li class="nav-item">
-                    <a class="nav-link active px-3 me-2" href="/">Home</a>
-                </li>
-                <li class="nav-item w-100">
-                    <a class="nav-link btn btn-recommend pulse-btn px-4 py-2 ms-lg-2 text-dark" href="/recommend">
-                        Recommend Me a Book
-                    </a>
-                </li>
-            </ul>
-        </div>
-    </div>
-</nav>
-
-<div class="container text-center py-5 mb-3">
-    <h1 class="hero-title fw-bold display-4 mb-3">
-        Discover Your Next Page-Turner
-    </h1>
-    <p class="text-white-50 fs-5 col-md-8 mx-auto">
-        Explore top-rated books curated by readers worldwide. Find recommendations tailored just for you.
-    </p>
-</div>
-
-<div class="container pb-5">
-    <div class="row row-cols-1 row-cols-sm-2 row-cols-lg-3 row-cols-xl-4 g-4 justify-content-center">
-
-        {% for i in range(book_name|length) %}
-        <div class="col">
-            <div class="card h-100 shadow book-card">
-                <img src="{{ image[i] }}" class="card-img-top book-card-img" alt="{{ book_name[i] }} Cover">
-
-                <div class="card-body d-flex flex-column">
-                    <h5 class="card-title text-truncate">{{ book_name[i] }}</h5>
-                    <p class="author-text mb-2 text-truncate">By {{ author[i] }}</p>
-
-                    <div class="mt-auto">
-                        <div class="d-flex align-items-center mb-1">
-                            <span class="rating-star me-1">⭐</span>
-                            <span class="fw-bold text-white">{{ rating[i] }}</span>
-                             <span class="mx-1 text-muted">/</span>
-                             <span class="text-muted" style="font-size: 0.9em">5</span>
-                        </div>
-                        <p class="rating-count mb-0">{{ votes[i] }} total ratings</p>
+                <div class="hidden md:block">
+                    <div class="ml-10 flex items-center space-x-8">
+                        <a href="/" class="text-white px-3 py-2 rounded-md text-sm font-medium border-b-2 border-brand-gold">Home</a>
+                        <a href="#" class="text-gray-300 hover:text-white transition-colors px-3 py-2 rounded-md text-sm font-medium">Top 50</a>
+                        <a href="/recommend" class="bg-brand-gold hover:bg-brand-gold-hover text-library-dark px-6 py-2.5 rounded-full text-sm font-bold transition-all shadow-lg shadow-yellow-900/20 hover:shadow-yellow-900/40 transform hover:scale-105 flex items-center gap-2">
+                            <span>Get Recommendation</span>
+                            <i class="fa-solid fa-arrow-right text-xs"></i>
+                        </a>
                     </div>
+                </div>
+
+                <div class="-mr-2 flex md:hidden">
+                    <button type="button" onclick="document.getElementById('mobile-menu').classList.toggle('hidden')" class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-white hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white">
+                        <span class="sr-only">Open main menu</span>
+                        <i class="fa-solid fa-bars text-xl"></i>
+                    </button>
                 </div>
             </div>
         </div>
-        {% endfor %}
 
-    </div>
-</div>
+        <div class="hidden md:hidden bg-library-card border-t border-gray-700" id="mobile-menu">
+            <div class="px-4 pt-2 pb-6 space-y-2 sm:px-3">
+                <a href="/" class="text-white block px-3 py-2 rounded-md text-base font-medium bg-gray-900">Home</a>
+                <a href="#" class="text-gray-300 hover:text-white block px-3 py-2 rounded-md text-base font-medium">Top 50 Books</a>
+                <a href="/recommend" class="w-full text-center mt-4 block bg-brand-gold text-library-dark px-3 py-3 rounded-lg text-base font-bold shadow-md">
+                    Recommend Me a Book
+                </a>
+            </div>
+        </div>
+    </nav>
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <header class="relative pt-32 pb-12 lg:pt-40 lg:pb-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto text-center w-full">
+        <div class="absolute top-0 left-1/2 -translate-x-1/2 w-full h-full overflow-hidden -z-10 opacity-20 pointer-events-none">
+            <div class="absolute top-1/4 left-1/4 w-96 h-96 bg-brand-gold blur-[128px] rounded-full mix-blend-screen"></div>
+            <div class="absolute top-1/3 right-1/4 w-64 h-64 bg-purple-600 blur-[128px] rounded-full mix-blend-screen"></div>
+        </div>
+
+        <h1 class="font-serif text-5xl md:text-6xl lg:text-7xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-white via-gray-200 to-gray-400 mb-6 leading-tight">
+            Curated Wisdom for <br class="hidden md:block" /> Every Reader.
+        </h1>
+        <p class="mt-4 max-w-2xl mx-auto text-lg md:text-xl text-text-secondary leading-relaxed">
+            Explore our digital library of top-rated masterpieces. From timeless classics to modern bestsellers, find the story that speaks to you.
+        </p>
+    </header>
+
+    <main class="flex-grow max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-20 w-full">
+        <div class="flex items-center justify-between mb-8 border-b border-gray-700 pb-4">
+            <h2 class="text-2xl font-serif font-semibold text-white">Trending Now</h2>
+            <div class="text-sm text-text-secondary">Showing Top Results</div>
+        </div>
+
+        <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6 sm:gap-8">
+            
+            {% for i in range(book_name|length) %}
+            <div class="group relative bg-library-card rounded-xl overflow-hidden book-shadow hover-card-rise border border-gray-700/50 flex flex-col h-full">
+                
+                <div class="relative aspect-[2/3] w-full overflow-hidden bg-gray-800">
+                   <img 
+    src="{{ image[i] }}" 
+    alt="{{ book_name[i] }}"
+    class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+    loading="lazy"
+    onload="if(this.naturalWidth < 10) { this.src='https://placehold.co/400x600/png?text=No+Cover'; }"
+    onerror="this.onerror=null; this.src='https://placehold.co/400x600/png?text=No+Cover';"
+>
+                    
+                    <div class="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                        <button class="bg-brand-gold hover:bg-white hover:text-library-dark text-library-dark font-bold py-2 px-6 rounded-full transform translate-y-4 group-hover:translate-y-0 transition-all duration-300 text-sm">
+                            View Details
+                        </button>
+                    </div>
+                </div>
+
+                <div class="p-4 flex flex-col flex-grow">
+                    <h3 class="font-serif text-lg font-bold text-white leading-tight mb-1 line-clamp-2 group-hover:text-brand-gold transition-colors">
+                        {{ book_name[i] }}
+                    </h3>
+                    <p class="text-sm text-text-secondary font-medium mb-3 line-clamp-1">
+                        By {{ author[i] }}
+                    </p>
+
+                    <div class="mt-auto pt-3 border-t border-gray-700/50 flex flex-col gap-1">
+                        <div class="flex items-center gap-1.5">
+                            <div class="flex text-brand-gold text-xs">
+                                <i class="fa-solid fa-star"></i>
+                            </div>
+                            <span class="font-bold text-white text-sm">{{ rating[i] | round(2)}}</span>
+                            <span class="text-xs text-gray-500">/ 5</span>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <span class="text-xs text-text-secondary">{{ votes[i] }} reviews</span>
+                            <i class="fa-regular fa-bookmark text-gray-500 hover:text-white cursor-pointer transition-colors"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+
+        </div>
+    </main>
+
+    <footer class="bg-black/30 border-t border-gray-800 mt-auto">
+        <div class="max-w-7xl mx-auto py-8 px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row justify-between items-center gap-4">
+            <p class="text-gray-400 text-sm">© 2025 BookHaven. Designed for Readers.</p>
+            <div class="flex space-x-6">
+                <a href="#" class="text-gray-400 hover:text-brand-gold transition-colors"><i class="fa-brands fa-github text-xl"></i></a>
+                <a href="#" class="text-gray-400 hover:text-brand-gold transition-colors"><i class="fa-brands fa-twitter text-xl"></i></a>
+                <a href="#" class="text-gray-400 hover:text-brand-gold transition-colors"><i class="fa-brands fa-instagram text-xl"></i></a>
+            </div>
+        </div>
+    </footer>
+
 </body>
 </html>
